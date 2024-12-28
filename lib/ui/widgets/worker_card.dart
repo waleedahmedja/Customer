@@ -66,3 +66,65 @@ class WorkerCard extends StatelessWidget {
     );
   }
 }
+class WorkerCard extends StatelessWidget {
+  final String workerName;
+  final String workerPhone; // New field for phone number
+  final double rating;
+  final VoidCallback onSelect;
+
+  const WorkerCard({
+    required this.workerName,
+    required this.workerPhone,
+    required this.rating,
+    required this.onSelect,
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      elevation: 2,
+      child: ListTile(
+        title: Text(workerName),
+        subtitle: Row(
+          children: [
+            Icon(Icons.star, color: Colors.yellow, size: 18),
+            SizedBox(width: 4),
+            Text("$rating"),
+          ],
+        ),
+        trailing: ElevatedButton(
+          onPressed: onSelect,
+          child: Text("Select"),
+        ),
+        onTap: () => showModalBottomSheet(
+          context: context,
+          builder: (context) => _workerDetailsModal(context),
+        ),
+      ),
+    );
+  }
+
+  Widget _workerDetailsModal(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text("Worker Details", style: Theme.of(context).textTheme.headline6),
+          SizedBox(height: 8),
+          Text("Name: $workerName"),
+          Text("Phone: $workerPhone"), // Show worker phone
+          Text("Rating: $rating"),
+          ElevatedButton(
+            onPressed: () {
+              Navigator.pop(context);
+              onSelect();
+            },
+            child: Text("Select This Worker"),
+          ),
+        ],
+      ),
+    );
+  }
+}
