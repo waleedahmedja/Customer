@@ -148,3 +148,31 @@ class MyApp extends StatelessWidget {
     );
   }
 }
+import 'package:flutter/material.dart';
+import 'ui/screens/onboarding_screen.dart';
+import 'ui/screens/service_selection_screen.dart';
+import 'ui/screens/worker_list_screen.dart';
+import 'ui/screens/job_summary_screen.dart';
+
+void main() {
+  runApp(const MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData.light(),
+      initialRoute: '/',
+      routes: {
+        '/': (context) => const OnboardingScreen(),
+        '/service-selection': (context) => const ServiceSelectionScreen(),
+        '/worker-list': (context) => const WorkerListScreen(),
+        '/job-summary': (context) => const JobSummaryScreen(),
+      },
+    );
+  }
+}
