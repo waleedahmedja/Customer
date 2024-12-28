@@ -92,3 +92,56 @@ class JobSummaryScreen extends StatelessWidget {
     );
   }
 }
+class JobSummaryScreen extends StatelessWidget {
+  final String workerName;
+  final String workerPhone;
+
+  const JobSummaryScreen({
+    required this.workerName,
+    required this.workerPhone,
+    super.key,
+  });
+
+  Future<void> _cancelJob(BuildContext context) async {
+    try {
+      // Example: Update job status in Firestore
+      await FirebaseFirestore.instance
+          .collection('jobs')
+          .doc('JOB_ID') // Replace with actual job ID
+          .update({'status': 'canceled'});
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Job canceled successfully.")),
+      );
+
+      Navigator.pop(context); // Return to the previous screen
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Failed to cancel job: $e")),
+      );
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text("Job Summary")),
+      body: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          children: [
+            Text("You selected: $workerName"),
+            SizedBox(height: 8),
+            Text("Contact: $workerPhone"),
+            SizedBox(height: 16),
+            ElevatedButton(
+              onPressed: () => _cancelJob(context),
+              style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
+              child: Text("Cancel Job"),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
